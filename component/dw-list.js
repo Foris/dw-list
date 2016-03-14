@@ -92,13 +92,13 @@ urlBase = urlBase.replace('dw-list.js', '');
         // put options into its group
         $.get(urlBase + "templates/items.html", function( result ) {
             let template = _.template(result);
-
             let data = _.sortBy(options['data'], 'primary');
 
             // options each
-            data.forEach(data => {
+            data.forEach(function (data, i) {
               let contentHtml = template({
                 id: data['id'],
+                place: i + 1,
                 primary: data['primary'],
                 secundary: data['secundary']
               });
@@ -283,7 +283,7 @@ urlBase = urlBase.replace('dw-list.js', '');
       $items.on({
         dragstart: function(event){
           $from = $(event.target).data('id');
-          console.log("from: ", $from);
+          // console.log("from: ", $from);
         },
         dragenter: function(event){
           $to = $(event.target).parent().data('id');
@@ -293,7 +293,6 @@ urlBase = urlBase.replace('dw-list.js', '');
           if (event.preventDefault) {
             event.preventDefault(); // Necessary. Allows us to drop.
           }
-
         },
         dragleave: function(event){
           // console.log('dragleave', $(event.target))
@@ -309,8 +308,6 @@ urlBase = urlBase.replace('dw-list.js', '');
           $fromItem.html($toItemHtml);
           $toItem.html($fromItemHtml);
 
-          console.log("$fromItem: ", $from, $fromItem);
-          console.log("$toItem: ", $to, $toItem);
         }
       })
     },
