@@ -96,9 +96,8 @@ let $toItemSelector;
     },
     orderTemplate: function($el, options){
       // put items
-      // put items
       let template;
-      if(typeof options.secundary != 'undefined'){
+      if(typeof options.data[0]['secundary'] != 'undefined'){
         template = "templates/items.html";
       }else{
         template = "templates/single.html";
@@ -128,7 +127,7 @@ let $toItemSelector;
 
     getVal: function($el){
       // update $el data
-      let items = $el.find('.items .option.selected').toArray();
+      let items = $el.find('.items .item').toArray();
       let ids = [];
       for(let i in items){
         let $itm = $(items[i]);
@@ -167,6 +166,8 @@ let $toItemSelector;
           events.startOrder($el, options);  // re bind all items drags events
           $el.find('content .item').css('background-color','#fff')
           event.preventDefault();
+
+          api.val($el);
         }
 
 
@@ -187,27 +188,8 @@ let $toItemSelector;
     startChange: function($el, options){
       events.dragItemsChange($el, options);
     },
-    toggleGroup: function($el, options){
-    },
-    clickItems: function($el, options){
-      let $items = $el.find('.items .item');
-      $items.on({
-        click: function(event){
-          // event.preventDefault();
-          // event.stopPropagation();
-          // // mark as selected
-          // $options.removeClass('selected');
-          // $(event.target).parent().toggleClass('selected');
-          // api.val($el);
-          // // show selected option
-          // methods.showSelected( $el, $(event.target), options )
-        }
-      })
-    },
     dragItemsOrder: function($el, options){
       let $items = $el.find('.items .item');
-
-
 
       $items.bind({
         dragstart: function(event){
@@ -234,10 +216,9 @@ let $toItemSelector;
           $toItem = $el.find('.items .item[data-id="' + $to + '"]');
           $indicator.remove();
 
-          if(typeof options.secundary != 'undefined'){
+          if(typeof options.data[0]['secundary'] != 'undefined'){
             $toItem.after('<li class="item indicator" draggable="true"></li>');
           }else{
-
             $toItem.after('<li class="item indicator" draggable="true" style="height:40px"></li>');
           }
 
