@@ -175,24 +175,16 @@ let $toItemSelector;
       });
     },
     swap: function($el, $from, $to, $fromSelector, $toSelector, options){
-      // console.log("$el: ", $el);
-      // console.log("$from: ", $from);
-      // console.log("$to: ", $to);
-      // console.log("$toSelector: ", $toSelector);
-      //
-
         let $fromHtml = $fromSelector.html();
         $el.find('.indicator').html($fromHtml).removeClass('indicator').attr('data-id', $from);
 
-        let $fromSelectorReview = $el.find('.items .item[data-id="' + $from + '"]');
-        console.log("$fromSelector: ", $fromSelector.length);
+        let $fromSelectorReview = $el.find('.items .item[data-id="' + $from + '"]');  // take the total of from item showed, for some reason sometimes are 2
 
+        // prevent remove if for some reason are just one from item
         if($fromSelectorReview.length > 1){
-
-          $fromSelector.remove();
-
-
-          events.startOrder($el, options);
+          $fromSelector.remove();           // remove the active from item
+          events.startOrder($el, options);  // re bind all items drags events
+          $el.find('content .item').css('background-color','#fff')
           event.preventDefault();
         }
 
@@ -243,7 +235,7 @@ let $toItemSelector;
 
           $fromItemSelector = $el.find('.items .item[data-id="' + $from + '"]');
 
-          let itemWidth = $fromItemSelector.outerWidth();
+          $fromItemSelector.css('background-color', '#E5E8EC');
 
           // $fromItemSelector.css({
           //   'position': 'absolute',
@@ -254,13 +246,11 @@ let $toItemSelector;
         dragenter: function(event){
           $to = $(event.target).data('id');
 
-          // console.log("to: ", $to);
           $indicator = $el.find('.indicator');
 
           $toItem = $el.find('.items .item[data-id="' + $to + '"]');
           $indicator.remove();
           $toItem.after('<li class="item indicator" draggable="true"></li>');
-          events.indicator($el, $indicator);
 
         },
         dragover: function(event){
@@ -269,28 +259,20 @@ let $toItemSelector;
           }
         },
         dragend: function(event){
-          // console.log('dragend', $(event.target))
+
           $(event.target).removeClass('fromMoved');
 
           $fromItemSelector = $el.find('.items .item[data-id="' + $from + '"]');
           $toItemSelector = $el.find('.items .item[data-id="' + $to + '"]');
 
           methods.swap($el, $from, $to, $fromItemSelector, $toItemSelector, options);
-          // events.startOrder($el, options);
 
         },
         drop: function(event){
-
+          // not use this because the indicator item not listen the drop (no binding), for these reason i create a swap methods that interacting with the indicator in a indirectino way
         }
       })
 
-    },
-    indicator: function($el, $indicator){
-      $indicator.bind({
-        startdrag: function(event){
-          alert('ok')
-        }
-      })
     },
     dragItemsChange: function($el, options){
       let $items = $el.find('.items .item');
@@ -308,11 +290,9 @@ let $toItemSelector;
             'background': '#fff'
           })
           $(event.target).addClass('fromMoved');
-          // console.log("from: ", $from);
         },
         dragenter: function(event){
           $to = $(event.target).data('id');
-          // console.log("to: ", $to);
         },
         dragover: function(event){
           if (event.preventDefault) {
@@ -320,10 +300,8 @@ let $toItemSelector;
           }
         },
         dragleave: function(event){
-          // console.log('dragleave', $(event.target))
         },
         dragend: function(event){
-          // console.log('dragend', $(event.target))
           $(event.target).removeClass('fromMoved');
         },
         drop: function(event){
