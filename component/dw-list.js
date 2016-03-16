@@ -202,11 +202,6 @@ let $toItemSelector;
 
           $fromItemSelector.css('background-color', '#E5E8EC');
 
-          // $fromItemSelector.css({
-          //   'position': 'absolute',
-          //   'width': itemWidth,
-          //   'z-index': 99
-          // });
 
 
         },
@@ -218,13 +213,49 @@ let $toItemSelector;
           $toItem = $el.find('.items .item[data-id="' + $to + '"]');
           $indicator.remove();
 
-          if(typeof options.data[0]['secondary'] != 'undefined'){
-            $toItem.after('<li class="item indicator" draggable="true"></li>');
-          }else{
-            $toItem.after('<li class="item indicator" draggable="true" style="height:40px"></li>');
-          }
+          let $itemIndex = $(event.target).index();
 
-        },
+          if($itemIndex > 0){
+
+            console.log("item > 0");
+
+            if($toItem.index() > 0){
+
+              console.log("item > 0 , to > 0");
+
+              if(typeof options.data[0]['secondary'] != 'undefined'){
+                $toItem.after('<li class="item indicator" draggable="true"></li>');
+              }else{
+                $toItem.after('<li class="item indicator" draggable="true" style="height:40px"></li>');
+              }
+
+            }
+
+          }else{
+
+            console.log("item = 0");
+
+            console.log("from: ", $fromItemSelector.index());
+
+
+              if($fromItemSelector.index() > 0){
+
+                console.log("item = 0 , to > 0");
+
+                  if(typeof options.data[0]['secondary'] != 'undefined'){
+                    $el.find('content .items .item:first-child').before('<li class="item indicator" draggable="true"></li>');
+                  }else{
+                    $el.find('content .items .item:first-child').before('<li class="item indicator" draggable="true" style="height:40px"></li>');
+                  }
+
+                  if($toItem.index() == 0){
+                    console.log("yesyesyesyesy");
+                  }
+
+              }
+
+        }
+      },
         dragover: function(event){
           if (event.preventDefault) {
             event.preventDefault(); // Necessary. Allows us to drop.
