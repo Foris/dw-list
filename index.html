@@ -23,67 +23,68 @@
     // checkbox
     $('#sample1').dwList({
       orientation: 'vertical',
+      style: 'light',
+      type: 'order', // priority, order, change
       data: [
         {
           id: 1,
+          priority: 1, // if don`t exist order sort asc by primary
           primary: 'Cat',
-          secundary: 'Gray',
-          group: ['feline']
+          secundary: 'Gray' // if don`t exist re-acomodate style to 1 file (other template)
         },
         {
           id: 2,
+          priority: 1,
           primary: 'Dog',
-          secundary: 'White',
-          group: ['canine']
+          secundary: 'White'
         },
         {
           id: 3,
+          priority: 2,
           primary: 'Cheetah',
-          secundary: 'yellow',
-          group: ['canine']
+          secundary: 'yellow'
         },
         {
           id: 4,
+          priority: 1,
           primary: 'Fox',
-          secundary: 'Brown',
-          group: ['canine']
+          secundary: 'Brown'
         },
         {
           id: 5,
+          priority: 3,
           primary: 'Culpeo',
-          secundary: 'Light Brown',
-          selected: true,
-          group: ['canine']
+          secundary: 'Light Brown'
         },
         {
           id: 6,
+          priority: 2,
           primary: 'Jaguar',
-          secundary: 'Yellow',
-          group: ['feline']
+          secundary: 'Yellow'
         },
         {
           id: 7,
+          priority: 3,
           primary: 'Lion',
-          secundary: 'orange',
-          group: ['feline']
+          secundary: 'orange'
         },
         {
           id: 8,
+          priority: 4,
           primary: 'African Wild Dog',
-          secundary: 'marbled',
-          group: ['canine']
+          secundary: 'marbled'
         },
         {
           id: 9,
+          priority: 1,
           primary: 'Yacare Caiman',
-          secundary: 'green',
-          group: ['reptile']
+          secundary: 'green'
         },
         {
           id: 10,
+          priority: 2,
           primary: 'Leopard Gecko',
-          secundary: 'light brown',
-          group: ['reptile']
+          secundary: 'light brown'
         }
       ]
     })

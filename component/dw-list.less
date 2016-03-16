@@ -296,6 +296,7 @@ src: local('Open Sans'), local('OpenSans'), url('/fonts/OpenSans-Bold.ttf') form
       overflow-y: auto;
       display: inline-block;
       background: #F0F1F2;
+      padding: 4px 0;
     }
 
 
@@ -331,12 +332,13 @@ src: local('Open Sans'), local('OpenSans'), url('/fonts/OpenSans-Bold.ttf') form
             font-size: 14px;
             padding: 4px 10px;
             float: left;
-            width: 100%;
+            width: calc(~'100% - 10px');
             box-sizing: border-box;
             list-style: none;
-            margin: 2px 5px;
+            margin: 3px 5px;
             background: #fff;
             box-sizing: border-box;
+            cursor: move;
 
             .redondo(18px);
             .animacion(.5s);
@@ -351,17 +353,28 @@ src: local('Open Sans'), local('OpenSans'), url('/fonts/OpenSans-Bold.ttf') form
             //
             &:hover
             {
-              background-color: #CCD5DD;
+              background-color: #E5E8EC;
+
+              span{
+
+                color: #506072;
+                opacity: 1;
+              }
+
             }
 
             .primary
             {
               float: left;
               width: 100%;
+              height: 25px;
               font-weight: 700;
               padding: 2px 4px 0;
               box-sizing: border-box;
-              cursor: default;
+              cursor: move;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
 
               .noselect;
             }
@@ -374,7 +387,10 @@ src: local('Open Sans'), local('OpenSans'), url('/fonts/OpenSans-Bold.ttf') form
               font-size: 11px;
               color: #383333;
               box-sizing: border-box;
-              cursor: default;
+              cursor: move;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
 
               .noselect;
             }
@@ -384,6 +400,64 @@ src: local('Open Sans'), local('OpenSans'), url('/fonts/OpenSans-Bold.ttf') form
               background-color: #CCFFFF;
             }
 
+            &.fromMoved
+            {
+              background: #C5D0DB;
+              .noselect;
+
+              > span
+              {
+                color: #383333;
+                opacity: 0.5;
+                .noselect;
+              }
+            }
+
+            .left
+            {
+              position: relative;
+              float: left;
+              width: 15px;
+              margin-top: 10px;
+              pointer-events: none;
+
+              span
+              {
+                font-weight: 100;
+                font-size: 12px;
+                .noselect;
+              }
+            }
+
+            .right
+            {
+              position: relative;
+              float: left;
+              width: Calc( 100% - 15px );
+              pointer-events: none;
+            }
+
+          }
+
+          .indicator
+          {
+            list-style: none;
+
+            color: #000;
+            font-size: 14px;
+            padding: 4px 10px;
+            float: left;
+            width: calc(~'100% - 10px');
+            height: 52px;
+            box-sizing: border-box;
+            list-style: none;
+            margin: 2px 5px;
+            background: #A0E8BB;
+            box-sizing: border-box;
+            cursor: move;
+
+            .redondo(18px);
+            .animacion(.5s);
           }
   }
 
