@@ -3,10 +3,11 @@
 
 A list component for **DarwinEd** app
 
-<img>
+<img srch="https://raw.githubusercontent.com/daniel-llach/dw-list/master/img/img1.png">
 
 
-- live example:
+- live example: http://daniel-llach.github.io/dw-list/
+>>>>>>> master
 
 **dw-list** show a sortable list of items, that support _single_ al _double lines_ of content
 

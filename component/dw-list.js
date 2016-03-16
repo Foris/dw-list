@@ -1,3 +1,5 @@
+"use strict"
+
 var scripts = document.getElementsByTagName("script");
 var urlBase = scripts[scripts.length-1].src;
 urlBase = urlBase.replace('dw-list.js', '');
@@ -15,7 +17,6 @@ let $toItemSelector;
 
 // dwFilter
 (function( $ ){
-  "use strict"
 
   // Public methods
   let api = {
