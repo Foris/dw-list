@@ -96,7 +96,14 @@ let $toItemSelector;
     },
     orderTemplate: function($el, options){
       // put items
-      $.get(urlBase + "templates/items.html", function( result ) {
+      // put items
+      let template;
+      if(typeof options.secundary != 'undefined'){
+        template = "templates/items.html";
+      }else{
+        template = "templates/single.html";
+      }
+      $.get(urlBase + template, function( result ) {
           let template = _.template(result);
           // let data = options['data'];
           let data = _.sortBy(options['data'], 'priority');
@@ -118,32 +125,6 @@ let $toItemSelector;
           events.startOrder($el, options); // events
         });
     },
-    changeTemplate: function($el, options){
-
-      // put items
-      $.get(urlBase + "templates/items.html", function( result ) {
-          let template = _.template(result);
-          // let data = options['data'];
-          let data = _.sortBy(options['data'], 'priority');
-
-          // options each
-          data.forEach(function (data, i) {
-            let contentHtml = template({
-              id: data['id'],
-              priority: i + 1,
-              // priority: data['priority'],
-              primary: data['primary'],
-              secundary: data['secundary']
-            });
-            // paint it
-            $el.find('content .items').append(contentHtml);
-          });
-
-          // methods.order($el); // order
-          events.startChange($el, options); // events
-        });
-
-      },
 
     getVal: function($el){
       // update $el data
@@ -242,6 +223,8 @@ let $toItemSelector;
           //   'width': itemWidth,
           //   'z-index': 99
           // });
+
+
         },
         dragenter: function(event){
           $to = $(event.target).data('id');
@@ -250,7 +233,13 @@ let $toItemSelector;
 
           $toItem = $el.find('.items .item[data-id="' + $to + '"]');
           $indicator.remove();
-          $toItem.after('<li class="item indicator" draggable="true"></li>');
+
+          if(typeof options.secundary != 'undefined'){
+            $toItem.after('<li class="item indicator" draggable="true"></li>');
+          }else{
+
+            $toItem.after('<li class="item indicator" draggable="true" style="height:40px"></li>');
+          }
 
         },
         dragover: function(event){
