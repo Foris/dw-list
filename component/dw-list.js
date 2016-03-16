@@ -97,7 +97,7 @@ let $toItemSelector;
     orderTemplate: function($el, options){
       // put items
       let template;
-      if(typeof options.data[0]['secundary'] != 'undefined'){
+      if(typeof options.data[0]['secondary'] != 'undefined'){
         template = "templates/items.html";
       }else{
         template = "templates/single.html";
@@ -114,7 +114,7 @@ let $toItemSelector;
               priority: i + 1,
               // priority: data['priority'],
               primary: data['primary'],
-              secundary: data['secundary']
+              secondary: data['secondary']
             });
             // paint it
             $el.find('content .items').append(contentHtml);
@@ -216,7 +216,7 @@ let $toItemSelector;
           $toItem = $el.find('.items .item[data-id="' + $to + '"]');
           $indicator.remove();
 
-          if(typeof options.data[0]['secundary'] != 'undefined'){
+          if(typeof options.data[0]['secondary'] != 'undefined'){
             $toItem.after('<li class="item indicator" draggable="true"></li>');
           }else{
             $toItem.after('<li class="item indicator" draggable="true" style="height:40px"></li>');
