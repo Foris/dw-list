@@ -183,7 +183,13 @@
   var events = {
 
     startOrder: function($el, options){
-      events.dragItemsOrder($el, options);
+      let sortable = options.sortable;
+      if(sortable){
+        events.dragItemsOrder($el, options);
+      }else{
+        $el.find('.item').removeAttr('draggable');
+        $el.find('.item > .left').remove();
+      }
       methods.updatePosition($el);
       events.removeItem($el, options);
 
