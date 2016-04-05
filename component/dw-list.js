@@ -1,22 +1,22 @@
-"use strict"
-
-var scripts = document.getElementsByTagName("script");
-var urlBase = scripts[scripts.length-1].src;
-urlBase = urlBase.replace('dw-list.js', '');
-
-let $from;
-let $to;
-
-let $fromItem;
-let $toItem;
-
-let $indicator;
-
-let $fromItemSelector;
-let $toItemSelector;
 
 // dwFilter
 (function( $ ){
+  "use strict"
+
+  var scripts = document.getElementsByTagName("script");
+  var urlBase = scripts[scripts.length-1].src;
+  urlBase = urlBase.replace('dw-list.js', '');
+
+  let $from;
+  let $to;
+
+  let $fromItem;
+  let $toItem;
+
+  let $indicator;
+
+  let $fromItemSelector;
+  let $toItemSelector;
 
 
   // Public methods
@@ -185,6 +185,7 @@ let $toItemSelector;
     startOrder: function($el, options){
       events.dragItemsOrder($el, options);
       methods.updatePosition($el);
+      events.removeItem($el, options);
 
     },
     startChange: function($el, options){
@@ -217,11 +218,9 @@ let $toItemSelector;
 
           if($itemIndex > 0){
 
-            console.log("item > 0");
 
             if($toItem.index() > 0){
 
-              console.log("item > 0 , to > 0");
 
               if(typeof options.data[0]['secondary'] != 'undefined'){
                 $toItem.after('<li class="item indicator" draggable="true"></li>');
@@ -233,14 +232,9 @@ let $toItemSelector;
 
           }else{
 
-            console.log("item = 0");
-
-            console.log("from: ", $fromItemSelector.index());
-
 
               if($fromItemSelector.index() > 0){
 
-                console.log("item = 0 , to > 0");
 
                   if(typeof options.data[0]['secondary'] != 'undefined'){
                     $el.find('content .items .item:first-child').before('<li class="item indicator" draggable="true"></li>');
@@ -249,7 +243,7 @@ let $toItemSelector;
                   }
 
                   if($toItem.index() == 0){
-                    console.log("yesyesyesyesy");
+
                   }
 
               }
@@ -346,6 +340,17 @@ let $toItemSelector;
               $clear.addClass('hide')
           }
       });
+    },
+    removeItem: function($el, options){
+      let $rm = $el.find('.remove');
+      $rm.on({
+        click: function(event){
+          console.log("remove");
+          let $this = $(event.target);
+          $this.parent().remove();
+          api.val($el);
+        }
+      })
     }
 
   };
