@@ -10,6 +10,7 @@
     <!-- wd-select dependencies -->
     <script src="./bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
     <script src="./bower_components/underscore/underscore-min.js" type="text/javascript"></script>
+    <script src="./bower_components/Sortable/Sortable.js" type="text/javascript"></script>
     <script src="./component/dw-list.js" type="text/javascript"></script>
     <link rel="stylesheet" type="text/css" href="./component/dw-list.css">
 
@@ -24,6 +25,7 @@
   <script type="text/javascript">
     // checkbox
     $('#sample1').dwList({
+      name: 'animals1',
       orientation: 'vertical',
       type: 'order', // priority, order, change
       sortable: true,
@@ -73,6 +75,7 @@
 
 
     $('#sample2').dwList({
+      name: 'animals2',
       orientation: 'vertical',
       style: 'light',
       type: 'order', // priority, order, change

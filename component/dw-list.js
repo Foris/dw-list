@@ -18,7 +18,6 @@
   let $fromItemSelector;
   let $toItemSelector;
 
-
   // Public methods
   let api = {
     init : function(options) {
@@ -86,7 +85,9 @@
     setTemplate : function($el, templateContent, options){
 
       let template = _.template(templateContent);
-      $el.html( template() );
+      $el.html( template({
+        id: options['name']
+      }) );
 
       if (typeof options !== 'undefined') {
         methods.itemTemplate($el, options)
@@ -164,22 +165,6 @@
       $items.forEach(function(item, i){
         $(item).find('.position').text(i+1);
       });
-    },
-    swap: function($el, $from, $to, $fromSelector, $toSelector, options){
-        let $fromHtml = $fromSelector.html();
-        $el.find('.indicator').html($fromHtml).removeClass('indicator').attr('data-id', $from);
-
-        let $fromSelectorReview = $el.find('.items .item[data-id="' + $from + '"]');  // take the total of from item showed, for some reason sometimes are 2
-
-        // prevent remove if for some reason are just one from item
-        if($fromSelectorReview.length > 1){
-          $fromSelector.remove();           // remove the active from item
-          events.startOrder($el, options);  // re bind all items drags events
-          $el.find('content .item').css('background-color','#fff')
-          event.preventDefault();
-
-          api.val($el);
-        }
     }
   }
 
@@ -189,11 +174,12 @@
 
     startOrder: function($el, options){
       if(!options.add){
+        // sortable
         let sortable = options.sortable;
         if(sortable){
+          Sortable.create(document.getElementById(options['name']), {});
           events.dragItemsOrder($el, options);
         }else{
-          $el.find('.item').removeAttr('draggable');
           $el.find('.item > .left').remove();
         }
       }
@@ -201,143 +187,24 @@
       events.removeItem($el, options);
 
     },
-    startChange: function($el, options){
-      events.dragItemsChange($el, options);
-    },
     dragItemsOrder: function($el, options){
       let $items = $el.find('.items .item');
 
       $items.bind({
         dragstart: function(event){
-          $from = $(event.target).data('id');
-          $(event.target).addClass('fromMoved');
-
-          $fromItemSelector = $el.find('.items .item[data-id="' + $from + '"]');
-
-          $fromItemSelector.css('background-color', '#E5E8EC');
-
-
-
+          $(event.target).addClass('indicator');
         },
         dragenter: function(event){
           $to = $(event.target).data('id');
-
-          $indicator = $el.find('.indicator');
-
-          $toItem = $el.find('.items .item[data-id="' + $to + '"]');
-          $indicator.remove();
-
-          let $itemIndex = $(event.target).index();
-
-          if($itemIndex > 0){
-
-
-            if($toItem.index() > 0){
-
-
-              if(typeof options.data[0]['secondary'] != 'undefined'){
-                $toItem.after('<li class="item indicator" draggable="true"></li>');
-              }else{
-                $toItem.after('<li class="item indicator" draggable="true" style="height:40px"></li>');
-              }
-
-            }
-
-          }else{
-
-
-              if($fromItemSelector.index() > 0){
-
-
-                  if(typeof options.data[0]['secondary'] != 'undefined'){
-                    $el.find('content .items .item:first-child').before('<li class="item indicator" draggable="true"></li>');
-                  }else{
-                    $el.find('content .items .item:first-child').before('<li class="item indicator" draggable="true" style="height:40px"></li>');
-                  }
-
-                  if($toItem.index() == 0){
-
-                  }
-
-              }
-
-        }
-      },
-        dragover: function(event){
-          if (event.preventDefault) {
-            event.preventDefault(); // Necessary. Allows us to drop.
-          }
-        },
-        dragend: function(event){
-
-          $(event.target).removeClass('fromMoved');
-
-          $fromItemSelector = $el.find('.items .item[data-id="' + $from + '"]');
-          $toItemSelector = $el.find('.items .item[data-id="' + $to + '"]');
-
-          methods.swap($el, $from, $to, $fromItemSelector, $toItemSelector, options);
-
-        },
-        drop: function(event){
-          // not use this because the indicator item not listen the drop (no binding), for these reason i create a swap methods that interacting with the indicator in a indirectino way
-        }
-      })
-
-    },
-    dragItemsChange: function($el, options){
-      let $items = $el.find('.items .item');
-
-      let $from;
-      let $to;
-
-      let $fromItem;
-      let $toItem;
-
-      $items.bind({
-        dragstart: function(event){
-          $from = $(event.target).data('id');
-          $el.find('.item').css({
-            'background': '#fff'
-          })
-          $(event.target).addClass('fromMoved');
-        },
-        dragenter: function(event){
-          $to = $(event.target).data('id');
+          methods.updatePosition($el);
         },
         dragover: function(event){
-          if (event.preventDefault) {
-            event.preventDefault(); // Necessary. Allows us to drop.
-          }
-        },
-        dragleave: function(event){
         },
         dragend: function(event){
-          $(event.target).removeClass('fromMoved');
+          $(event.target).removeClass('indicator');
+          api.val($el); // trigger update ids
         },
         drop: function(event){
-          $fromItem = $el.find('.items .item[data-id="' + $from + '"]');
-          $toItem = $el.find('.items .item[data-id="' + $to + '"]');
-
-          let $fromItemHtml = $fromItem.html();
-          let $toItemHtml = $toItem.html();
-
-          $fromItem.html($toItemHtml);
-          $toItem.html($fromItemHtml);
-
-          let $fromItemPriority = $fromItem.find('.position').text();
-          let $toItemPriority = $toItem.find('.position').text();
-
-          $fromItem.find('.position').text($toItemPriority);
-          $toItem.find('.position').text($fromItemPriority);
-
-          $fromItem.data('place', $toItemPriority)
-          $toItem.data('place', $fromItemPriority)
-
-          // prevent different background
-          $el.find('.item').css({
-            'background': '#fff'
-          })
-
         }
       })
     },
