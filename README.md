@@ -70,7 +70,11 @@ The way of how the user can interact with the items, the projected options for t
 - *Change*: The user can swap to items no affect anything else
 - *Order*: The user can swap to items no affect anything else
 
-### 3.1.3- Data
+### 3.1.3- Sortable
+
+If is *true* active the drag and drop interface, if you do not want simply don't include the sortable option.
+
+### 3.1.4- Data
 
 The data receives the next structure:
 ```javascript
@@ -80,10 +84,24 @@ The data receives the next structure:
   secondary: 'Gray'   // show in second line
 }
 ```
-
 - If secondary no exist dwList show automatically only one line.
 
-## 3.1.4- Destroy
+### 3.1.5- Add Items
+
+Indicate just an array of items objects as shown below:
+
+```javascript
+$('#id').dwList({
+  add:[
+    {
+      id: 12,
+      primary: 'Nutria'
+    }
+  ]
+})
+```
+
+### 3.1.5- Destroy
 This methods empty the container div and remove class too.
 ```javascript
 $('#id').dwList('destroy');
