@@ -29,10 +29,6 @@ src: local('Open Sans'), local('OpenSans'), url('/fonts/OpenSans-Bold.ttf') form
 }
 
 
-
-
-
-
 // redondeado
 .redondo (@radius: 5px) {
   -webkit-border-radius: @radius;
@@ -56,8 +52,6 @@ src: local('Open Sans'), local('OpenSans'), url('/fonts/OpenSans-Bold.ttf') form
 	/*--IE9 DOES NOT SUPPORT CSS3 GRADIENT BACKGROUNDS--*/
 
 }
-
-
 
 
 // eliminar estilos por defecto input, etc
@@ -289,10 +283,12 @@ src: local('Open Sans'), local('OpenSans'), url('/fonts/OpenSans-Bold.ttf') form
   {
     box-sizing: border-box;
     display: block;
+    height: 100%;
 
     .items
     {
-      height: 400px;
+      width: 100%;
+      height: 100%;
       overflow-y: auto;
       display: inline-block;
       background: #F0F1F2;
@@ -339,6 +335,7 @@ src: local('Open Sans'), local('OpenSans'), url('/fonts/OpenSans-Bold.ttf') form
             background: #fff;
             box-sizing: border-box;
             cursor: default;
+            position: relative;
 
             .redondo(18px);
             .animacion(.3s);
@@ -425,6 +422,26 @@ src: local('Open Sans'), local('OpenSans'), url('/fonts/OpenSans-Bold.ttf') form
               float: left;
               width: Calc( 100% - 15px );
               pointer-events: none;
+            }
+
+            &:hover .remove
+            {
+              display: block;
+            }
+
+            .remove
+            {
+              display: none;
+              width: 13px;
+              height: 13px;
+              background-size: 10px !important;
+              background-position: 1px 1px !important;
+              position: absolute;
+              top: calc(~'50% - 5px');
+              right: 10px;
+              background-repeat: no-repeat;
+              background-image: url(svg/clear.svg) !important;
+              cursor: pointer;
             }
 
           }
