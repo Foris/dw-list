@@ -107,9 +107,7 @@
       let optionsData = (options.add) ? options['add'] : options.data;
       // put items
       let template;
-      console.log("optionsData.length: ", optionsData.length);
       if(optionsData.length == 0){
-        console.log('empty')
         events.startOrder($el, options); // events
       }else{
         if(typeof optionsData[0]['secondary'] != 'undefined'){
@@ -165,7 +163,6 @@
 
     },
     updatePosition: function($el){
-      console.log("update index");
       let $items = $el.find('.item').toArray();
       $items.forEach(function(item, i){
         $(item).find('.position').text(i+1);
@@ -232,7 +229,6 @@
       let $rm = $el.find('.remove');
       $rm.on({
         click: function(event){
-          console.log("remove");
           let $this = $(event.target);
           $this.parent().remove();
           api.val($el);
