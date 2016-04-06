@@ -13,12 +13,6 @@
   let $fromItem;
   let $toItem;
 
-<<<<<<< HEAD
-=======
-  let $fromItemSelector;
-  let $toItemSelector;
-
->>>>>>> master
   // Public methods
   let api = {
     init : function(options) {
