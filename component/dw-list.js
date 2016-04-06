@@ -13,8 +13,6 @@
   let $fromItem;
   let $toItem;
 
-  let $indicator;
-
   let $fromItemSelector;
   let $toItemSelector;
 
@@ -56,7 +54,7 @@
       // deploy component structure
       let deployment = new Promise(function(resolve, reject){
         methods.deployComponent($el, options);
-        resolve()
+        resolve();
       })
       deployment.then(function(){
         methods.getTemplate($el, options);
@@ -109,12 +107,17 @@
       let optionsData = (options.add) ? options['add'] : options.data;
       // put items
       let template;
-      if(typeof optionsData[0]['secondary'] != 'undefined'){
-        template = "templates/items.html";
+      console.log("optionsData.length: ", optionsData.length);
+      if(optionsData.length == 0){
+        console.log('empty')
+        events.startOrder($el, options); // events
       }else{
-        template = "templates/single.html";
-      }
-      $.get(urlBase + template, function( result ) {
+        if(typeof optionsData[0]['secondary'] != 'undefined'){
+          template = "templates/items.html";
+        }else{
+          template = "templates/single.html";
+        }
+        $.get(urlBase + template, function( result ) {
           let template = _.template(result);
           // let data = options['data'];
           let data = _.sortBy(optionsData, 'priority');
@@ -124,7 +127,6 @@
             let contentHtml = template({
               id: data['id'],
               priority: i + 1,
-              // priority: data['priority'],
               primary: data['primary'],
               secondary: data['secondary']
             });
@@ -132,9 +134,11 @@
             $el.find('content .items').append(contentHtml);
           });
 
+
           events.startOrder($el, options); // events
           api.val($el); // trigger items ids
         });
+      }
     },
 
     getVal: function($el){
@@ -180,6 +184,8 @@
           Sortable.create(document.getElementById(options['name']), {});
           events.dragItemsOrder($el, options);
         }else{
+          Sortable.create(document.getElementById(options['name']), {});
+          console.log("startOrder");
           $el.find('.item > .left').remove();
         }
       }
