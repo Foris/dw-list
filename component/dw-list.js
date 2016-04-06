@@ -165,6 +165,7 @@
 
     },
     updatePosition: function($el){
+      console.log("update index");
       let $items = $el.find('.item').toArray();
       $items.forEach(function(item, i){
         $(item).find('.position').text(i+1);
@@ -185,10 +186,10 @@
           events.dragItemsOrder($el, options);
         }else{
           Sortable.create(document.getElementById(options['name']), {});
-          console.log("startOrder");
           $el.find('.item > .left').remove();
         }
       }
+      events.dragItemsOrder($el, options);
       methods.updatePosition($el);
       events.removeItem($el, options);
 
