@@ -23,14 +23,7 @@
   let api = {
     init : function(options) {
       const $el = $(this);
-      // deploy component structure
-      let deployment = new Promise(function(resolve, reject){
-        methods.deployComponent($el, options);
-        resolve()
-      })
-      deployment.then(function(){
-        methods.getTemplate($el, options);
-      })
+      (options.add) ? methods.addItem($el, options) : methods.newComponent($el, options);
     },
     destroy: function(){
       const $el = $(this);
@@ -54,11 +47,27 @@
       $items.removeClass('selected')
       $el.data('result','')
 
-    },
+    }
   }
 
   // Private methods
   let methods = {
+
+    newComponent: function($el, options){
+      // deploy component structure
+      let deployment = new Promise(function(resolve, reject){
+        methods.deployComponent($el, options);
+        resolve()
+      })
+      deployment.then(function(){
+        methods.getTemplate($el, options);
+      })
+    },
+
+    addItem: function($el, options){
+      (typeof $el === 'undefined' || $el === null ) ? $el = $(this) : null;
+      methods.orderTemplate($el, options);
+    },
 
     deployComponent: function($el, options){
       // convert the div into a dw-filter component
@@ -85,7 +94,6 @@
 
     },
     itemTemplate: function($el, options){
-      let data = options.data[0];
 
       switch(options.type){
         case 'change':
@@ -97,9 +105,10 @@
       }
     },
     orderTemplate: function($el, options){
+      let optionsData = (options.add) ? options['add'] : options.data;
       // put items
       let template;
-      if(typeof options.data[0]['secondary'] != 'undefined'){
+      if(typeof optionsData[0]['secondary'] != 'undefined'){
         template = "templates/items.html";
       }else{
         template = "templates/single.html";
@@ -107,7 +116,7 @@
       $.get(urlBase + template, function( result ) {
           let template = _.template(result);
           // let data = options['data'];
-          let data = _.sortBy(options['data'], 'priority');
+          let data = _.sortBy(optionsData, 'priority');
 
           // options each
           data.forEach(function (data, i) {
@@ -122,8 +131,8 @@
             $el.find('content .items').append(contentHtml);
           });
 
-          // methods.order($el); // order
           events.startOrder($el, options); // events
+          api.val($el); // trigger items ids
         });
     },
 
@@ -171,10 +180,6 @@
 
           api.val($el);
         }
-
-
-
-
     }
   }
 
@@ -183,12 +188,14 @@
   var events = {
 
     startOrder: function($el, options){
-      let sortable = options.sortable;
-      if(sortable){
-        events.dragItemsOrder($el, options);
-      }else{
-        $el.find('.item').removeAttr('draggable');
-        $el.find('.item > .left').remove();
+      if(!options.add){
+        let sortable = options.sortable;
+        if(sortable){
+          events.dragItemsOrder($el, options);
+        }else{
+          $el.find('.item').removeAttr('draggable');
+          $el.find('.item > .left').remove();
+        }
       }
       methods.updatePosition($el);
       events.removeItem($el, options);
@@ -358,9 +365,7 @@
         }
       })
     }
-
   };
-
 
   // jquery component stuff
   $.fn.dwList = function(methodOrOptions) {
