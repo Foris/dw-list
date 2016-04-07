@@ -159,6 +159,9 @@
       change: function(event){
         var result = smpl1.data('result');
         console.log("sample1 data: ", result);
+      },
+      delete: function(event, item){
+        console.log("an item remove", item);
       }
     });
     smpl2.on({

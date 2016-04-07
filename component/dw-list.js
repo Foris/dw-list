@@ -234,6 +234,8 @@
           let $this = $(event.target);
           $this.parent().remove();
           api.val($el);
+          // trigger remove event and pass item id
+          $el.trigger('delete', $(event.target).parent().data('id'));
         }
       })
     }
