@@ -87,6 +87,8 @@
         id: options['name']
       }) );
 
+      $el.addClass(options['style']);
+
       if (typeof options !== 'undefined') {
         methods.itemTemplate($el, options)
       } // Todo: falta cuando no trae contenido - $('#sample1').dwSelect()
