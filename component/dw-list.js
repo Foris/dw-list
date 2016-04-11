@@ -228,20 +228,30 @@
       });
     },
     removeItem: function($el, options){
-      console.log("$this: ", $(this));
       let $rm = $el.find('.remove');
-      $rm.one({
-        click: function(event){
-          event.preventDefault();
-          event.stopPropagation();
-          let $this = $(event.target);
-          $this.parent().remove();
-          api.val($el);
-          // trigger remove event and pass item id
-          console.log("ok: ", $(event.target).parent().data('id'));
-          $el.trigger('delete', $(event.target).parent().data('id'));
+
+      // For each item, schedule an event for deletion
+      // This event is attached only once, so it doesn't trigger
+      // multiple times. An attribute in the data of the element
+      // is used to track the scheduling.
+      $.each($rm, function ($index, item) {
+        var $item = $(item);
+
+        var scheduledToDelete = $item.data('scheduledToDelete');
+        if (!scheduledToDelete) {
+          $item.on("click", function(event){
+            event.preventDefault();
+            event.stopPropagation();
+            let $this = $(event.target);
+            $this.parent().remove();
+            api.val($el);
+            // trigger remove event and pass item id
+            $el.trigger('delete', $(event.target).parent().data('id'));
+          });
+
+          $item.data('scheduledToDelete', true);
         }
-      })
+      });
     }
   };
 
