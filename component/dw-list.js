@@ -231,6 +231,8 @@
       let $rm = $el.find('.remove');
       $rm.on({
         click: function(event){
+          event.preventDefault();
+          event.stopPropagation();
           let $this = $(event.target);
           $this.parent().remove();
           api.val($el);
