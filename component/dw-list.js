@@ -228,6 +228,7 @@
       });
     },
     removeItem: function($el, options){
+      console.log("$el: ", $el);
       let $rm = $el.find('.remove');
       $rm.on({
         click: function(event){
@@ -237,6 +238,7 @@
           $this.parent().remove();
           api.val($el);
           // trigger remove event and pass item id
+          console.log("ok: ", $(event.target).parent().data('id'));
           $el.trigger('delete', $(event.target).parent().data('id'));
         }
       })
