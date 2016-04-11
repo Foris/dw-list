@@ -228,9 +228,9 @@
       });
     },
     removeItem: function($el, options){
-      console.log("$el: ", $el);
+      console.log("$this: ", $(this));
       let $rm = $el.find('.remove');
-      $rm.on({
+      $rm.one({
         click: function(event){
           event.preventDefault();
           event.stopPropagation();
