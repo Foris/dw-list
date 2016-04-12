@@ -84,6 +84,8 @@
         id: options['name']
       }) );
 
+      $el.addClass(options['style']);
+
       if (typeof options !== 'undefined') {
         methods.itemTemplate($el, options)
       } // Todo: falta cuando no trae contenido - $('#sample1').dwSelect()
@@ -104,9 +106,7 @@
       let optionsData = (options.add) ? options['add'] : options.data;
       // put items
       let template;
-      console.log("optionsData.length: ", optionsData.length);
       if(optionsData.length == 0){
-        console.log('empty')
         events.startOrder($el, options); // events
       }else{
         if(typeof optionsData[0]['secondary'] != 'undefined'){
@@ -182,10 +182,10 @@
           events.dragItemsOrder($el, options);
         }else{
           Sortable.create(document.getElementById(options['name']), {});
-          console.log("startOrder");
           $el.find('.item > .left').remove();
         }
       }
+      events.dragItemsOrder($el, options);
       methods.updatePosition($el);
       events.removeItem($el, options);
 
@@ -226,14 +226,29 @@
     },
     removeItem: function($el, options){
       let $rm = $el.find('.remove');
-      $rm.on({
-        click: function(event){
-          console.log("remove");
-          let $this = $(event.target);
-          $this.parent().remove();
-          api.val($el);
+
+      // For each item, schedule an event for deletion
+      // This event is attached only once, so it doesn't trigger
+      // multiple times. An attribute in the data of the element
+      // is used to track the scheduling.
+      $.each($rm, function ($index, item) {
+        var $item = $(item);
+
+        var scheduledToDelete = $item.data('scheduledToDelete');
+        if (!scheduledToDelete) {
+          $item.on("click", function(event){
+            event.preventDefault();
+            event.stopPropagation();
+            let $this = $(event.target);
+            $this.parent().remove();
+            api.val($el);
+            // trigger remove event and pass item id
+            $el.trigger('delete', $(event.target).parent().data('id'));
+          });
+
+          $item.data('scheduledToDelete', true);
         }
-      })
+      });
     }
   };
 
