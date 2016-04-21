@@ -20,7 +20,13 @@
   let api = {
     init : function(options) {
       const $el = $(this);
-      (options.add) ? methods.addItem($el, options) : methods.newComponent($el, options);
+      if(options.add){
+        methods.addItem($el, options)
+      }else if(options.delete){
+        api.delete($el, options);
+      }else{
+        methods.newComponent($el, options);
+      }
     },
     destroy: function(){
       const $el = $(this);
@@ -30,6 +36,13 @@
     val: function($el){
       (typeof $el === 'undefined' || $el === null ) ? $el = $(this) : null;
       methods.getVal($el);
+    },
+    delete: function($el, options){
+      let idsFromOptions = options.delete;
+      idsFromOptions.forEach(id => {
+        let $itemToRemove = $el.find('.items li[data-id="' + id + '"]');
+        $itemToRemove.remove();
+      })
     },
     restart: function($el){
       // previene cuando no hay input
@@ -133,7 +146,6 @@
             // paint it
             $el.find('content .items').append(contentHtml);
           });
-
 
           events.startOrder($el, options); // events
           api.val($el); // trigger items ids
