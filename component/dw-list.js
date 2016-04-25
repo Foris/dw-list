@@ -192,11 +192,13 @@
       if(!options.add){
         // sortable
         let sortable = options.sortable;
+        var containerEl = $el.find('.items').first()[0];
+
         if(sortable){
-          Sortable.create(document.getElementById(options['name']), {});
+          Sortable.create(containerEl, {});
           events.dragItemsOrder($el, options);
         }else{
-          Sortable.create(document.getElementById(options['name']), {});
+          Sortable.create(containerEl, {});
           $el.find('.item > .left').remove();
         }
       }
