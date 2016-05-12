@@ -116,6 +116,8 @@
         case 'order':
           methods.orderTemplate($el, options);
           break;
+        case 'select':
+          methods.selectTemplate($el, options);
       }
     },
     orderTemplate: function($el, options){
@@ -148,6 +150,40 @@
           });
 
           events.startOrder($el, options); // events
+          api.val($el); // trigger items ids
+        });
+      }
+    },
+    selectTemplate: function($el, options){
+      let optionsData = (options.add) ? options['add'] : options.data;
+      // put items
+      let template;
+      if(optionsData.length == 0){
+        events.startOrder($el, options); // events
+      }else{
+        if(typeof optionsData[0]['secondary'] != 'undefined'){
+          template = "templates/select-multiple.html";
+        }else{
+          template = "templates/select-single.html";
+        }
+        $.get(urlBase + template, function( result ) {
+          let template = _.template(result);
+          // let data = options['data'];
+          let data = _.sortBy(optionsData, 'primary');
+
+          // options each
+          data.forEach(function (data, i) {
+            let contentHtml = template({
+              id: data['id'],
+              priority: i + 1,
+              primary: data['primary'],
+              secondary: data['secondary']
+            });
+            // paint it
+            $el.find('content .items').append(contentHtml);
+          });
+
+          events.startSelect($el, options); // events
           api.val($el); // trigger items ids
         });
       }
@@ -225,6 +261,59 @@
           api.val($el); // trigger update ids
         },
         drop: function(event){
+        }
+      })
+    },
+    startSelect: function($el, options){
+      // if(!options.add){
+      //   // sortable
+      //   let sortable = options.sortable;
+      //   var containerEl = $el.find('.items').first()[0];
+      //
+      //   if(sortable){
+      //     Sortable.create(containerEl, {});
+      //     events.dragItemsOrder($el, options);
+      //   }else{
+      //     Sortable.create(containerEl, {});
+      //     $el.find('.item > .left').remove();
+      //   }
+      // }
+      events.clickItemsSelect($el, options);
+      methods.updatePosition($el);
+      events.removeItem($el, options);
+
+    },
+    dragItemsOrder: function($el, options){
+      let $items = $el.find('.items .item');
+
+      $items.bind({
+        dragstart: function(event){
+          $(event.target).addClass('indicator');
+        },
+        dragenter: function(event){
+          $to = $(event.target).data('id');
+          methods.updatePosition($el);
+        },
+        dragover: function(event){
+        },
+        dragend: function(event){
+          $(event.target).removeClass('indicator');
+          api.val($el); // trigger update ids
+        },
+        drop: function(event){
+        }
+      })
+    },
+    clickItemsSelect: function($el, options){
+      let $items = $el.find('.items .item');
+
+      $items.bind({
+        click: function(event){
+          let itemId = $(event.target).data('id');
+          $items.removeClass('selected');
+          $(event.target).addClass('selected');
+
+          $el.trigger('change', itemId);
         }
       })
     },
