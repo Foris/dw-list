@@ -180,6 +180,7 @@
               secondary: data['secondary']
             });
             // paint it
+            console.log("contentHtml: ", contentHtml);
             $el.find('content .items').append(contentHtml);
           });
 
