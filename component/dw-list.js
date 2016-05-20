@@ -2,7 +2,6 @@
 // dwFilter
 (function( $ ){
   "use strict"
-
   var scripts = document.getElementsByTagName("script");
   var urlBase = scripts[scripts.length-1].src;
   urlBase = urlBase.replace('dw-list.js', '');
@@ -119,6 +118,7 @@
         case 'select':
           methods.selectTemplate($el, options);
       }
+
     },
     orderTemplate: function($el, options){
       let optionsData = (options.add) ? options['add'] : options.data;
@@ -180,7 +180,6 @@
               secondary: data['secondary']
             });
             // paint it
-            console.log("contentHtml: ", contentHtml);
             $el.find('content .items').append(contentHtml);
           });
 
@@ -226,6 +225,7 @@
   var events = {
 
     startOrder: function($el, options){
+
       if(!options.add){
         // sortable
         let sortable = options.sortable;
@@ -282,6 +282,9 @@
       events.clickItemsSelect($el, options);
       methods.updatePosition($el);
       events.removeItem($el, options);
+
+      // choose first !!!!
+      (options['chooseFirst'])? $el.find('.items li:eq(1)').click() : '';
 
     },
     dragItemsOrder: function($el, options){
